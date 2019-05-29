@@ -1,2 +1,5 @@
 # Hide the API key and access token.
 config.js
+
+# Don't track any of the node dependencies.
+node_modules/
