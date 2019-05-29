@@ -2,4 +2,4 @@
 config.js
 
 # Don't track any of the node dependencies.
-node_modules/
+node_modules
