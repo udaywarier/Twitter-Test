@@ -1,5 +1,2 @@
-# Configuration file that holds API key/access tokens
-config.js
-
-# All dependencies needed for this project.
+# Don't track the dependencies.
 node_modules/
