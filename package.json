@@ -4,7 +4,7 @@
   "description": "Testing the Twitter API to familiarize myself with how it works",
   "main": "config.js",
   "scripts": {
-    "start": "cd ./src && node test.js && cd ../"
+    "start": "cd ./src && node test.js dog && cd ../"
   },
   "keywords": [],
   "author": "Uday Warier",
