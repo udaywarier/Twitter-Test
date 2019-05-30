@@ -6,6 +6,9 @@ const config = require('../config');
 // Create a connetion to the Twitter API.
 let client = new twitter(config);
 
+// Logfile which will contain information on every tweet the bot has ever posted. This can be changed by different users to suit their own machine.
+let filepath = './tweet_logs.txt';
+
 // Need to pass in a command-line argument that is used to build the search query.
 if(process.argv.length < 2)
 {
@@ -19,16 +22,16 @@ else
 }
 
 /**
- * Gets a random tweet using a search query based on the input parameter, reverses each word in that tweet (keeping spaces intact) and then posts the reversed tweet.
+ * Gets a random tweet based on the keyword input, posts it, and logs the result in the specified logfile.
  * @param {string} keyword the keyword that is used to build the search query.
- * @returns error message if something goes wrong, success message if everything works.
+ * @outputs error message if something goes wrong, success message if everything works.
  */
 function post_tweet(keyword)
 {
     let get_params = 
     {
         q: keyword,
-        count: 2,
+        count: 10,
         lang: 'en'
     };
 
@@ -41,14 +44,23 @@ function post_tweet(keyword)
 
         else
         {
-            let tweet = data.statuses[0].text;
-
-            let post_params = 
+            let original_tweet = 
             {
-                status: 'I am a bot! Here\'s my tweet: ' + reverse_tweet(tweet)
+                original_timestamp: data.statuses[0].created_at,
+                original_user_name: data.statuses[0].user.name,
+                original_user_screen_name: data.statuses[0].user.screen_name,
+                original_status: data.statuses[0].text
+            }
+
+            let new_tweet = 
+            {
+                timestamp: new Date(),
+                user_name: 'Botty McBotface',
+                user_screen_name: 'iamarobot69',
+                status: 'I am a bot! Here is my tweet: ' + reverse_tweet(original_tweet.original_status)
             };
 
-            client.post('statuses/update', post_params, function(err, data, response)
+            client.post('statuses/update', {status: new_tweet.status}, function(err, data, response)
             {
                 if(err)
                 {
@@ -58,8 +70,40 @@ function post_tweet(keyword)
                 else
                 {
                     console.log('Tweet posted successfully!');
+                    write_to_file(original_tweet, new_tweet, filepath);
                 }
             });
+        }
+    });
+}
+
+/**
+ * Adds information about the original tweet and the new tweet the bot made to the given tweet log file.
+ * @param {Object} original_tweet the original tweet that a human Twitter user made.
+ * @param {Object} new_tweet the tweet that the bot made.
+ * @param {string} filepath path to the log file.
+ * @outputs error message if something goes wrong, success message if everything works.
+ */
+function write_to_file(original_tweet, new_tweet, filepath)
+{
+    let tweet_log = 
+    {
+        source_tweet: original_tweet,
+        bot_tweet: new_tweet
+    }
+
+    let tweet_log_to_string = JSON.stringify(tweet_log) + '\n';
+
+    fs.writeFile(filepath, tweet_log_to_string, {flag: 'a'}, function(err)
+    {
+        if(err)
+        {
+            console.log(err);
+        }
+
+        else
+        {
+            console.log("Tweet logged successfully!");
         }
     });
 }
