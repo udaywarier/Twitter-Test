@@ -3,13 +3,15 @@
   "version": "1.0.0",
   "description": "Testing the Twitter API to familiarize myself with how it works",
   "main": "config.js",
-  "scripts": {
+  "scripts": 
+  {
     "start": "cd ./src && node test.js dog && cd ../"
   },
   "keywords": [],
   "author": "Uday Warier",
   "license": "ISC",
-  "dependencies": {
+  "dependencies": 
+  {
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "twit": "^2.2.11"
