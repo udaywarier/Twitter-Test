@@ -1,5 +1,6 @@
 const twitter = require('twit');
 const process = require('process');
+const fs = require('fs');
 const config = require('../config');
 
 // Create a connetion to the Twitter API.
