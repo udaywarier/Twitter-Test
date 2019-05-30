@@ -1,31 +1,67 @@
-const process = require('process');
-const express = require('express');
 const twitter = require('twit');
+const process = require('process');
 const config = require('../config');
 
+// Create a connetion to the Twitter API.
 let client = new twitter(config);
 
-// console.log(T);
-// console.log(process.argv);
-// console.log(express);
-
-//TODO: Pick a random tweet, reverse every string in the tweet while keeping spaces intact, and then tweet that.
-
-client.get('search/tweets', { q: 'a', count: 10 }, function(err, data, response) 
+// Need to pass in a command-line argument that is used to build the search query.
+if(process.argv.length < 2)
 {
-    if(err)
-    {
-        console.log(err);
-    }
+    console.log('Error: pass in a keyword to be used to query a random tweet!');
+}
 
-    else
+// If we have a command-line argument, use it to post the new tweet.
+else
+{
+    post_tweet(process.argv[2]);
+}
+
+/**
+ * Gets a random tweet using a search query based on the input parameter, reverses each word in that tweet (keeping spaces intact) and then posts the reversed tweet.
+ * @param {string} keyword the keyword that is used to build the search query.
+ * @returns error message if something goes wrong, success message if everything works.
+ */
+function post_tweet(keyword)
+{
+    let get_params = 
     {
-        data.statuses.forEach(function(element)
+        q: keyword,
+        count: 2,
+        lang: 'en'
+    };
+
+    client.get('search/tweets', get_params, function(err, data, response) 
+    {
+        if(err)
         {
-            console.log('TEXT: ' + element.text);
-        });
-    }
-});
+            console.log(err);
+        }
+
+        else
+        {
+            let tweet = data.statuses[0].text;
+
+            let post_params = 
+            {
+                status: 'I am a bot! Here\'s my tweet: ' + reverse_tweet(tweet)
+            };
+
+            client.post('statuses/update', post_params, function(err, data, response)
+            {
+                if(err)
+                {
+                    console.log(err);
+                }
+
+                else
+                {
+                    console.log('Tweet posted successfully!');
+                }
+            });
+        }
+    });
+}
 
 /**
  * Takes a string and reverses each word individually while keeping spaces intact.
