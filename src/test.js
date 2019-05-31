@@ -19,19 +19,7 @@ if(process.argv.length < 2)
 // If we have a command-line argument, use it to post the new tweet.
 else
 {
-    child_process.exec('git add . && git commit -m \'Added child process\' && git push origin master', function(err, stdout, stderr)
-    {
-        if(err)
-        {
-            console.log(err);
-        }
-
-        else
-        {
-            console.log(stdout);
-        }
-    });
-    // post_tweet(process.argv[2]);
+    post_tweet(process.argv[2]);
 }
 
 /**
@@ -91,7 +79,7 @@ function post_tweet(keyword)
 }
 
 /**
- * Adds information about the original tweet and the new tweet the bot made to the given tweet log file.
+ * Adds information about the original tweet and the new tweet the bot made to the given tweet log file, pushes the updated log file to the git repo.
  * @param {Object} original_tweet the original tweet that a human Twitter user made.
  * @param {Object} new_tweet the tweet that the bot made.
  * @param {string} filepath path to the log file.
@@ -117,6 +105,19 @@ function write_to_file(original_tweet, new_tweet, filepath)
         else
         {
             console.log("Tweet logged successfully!");
+
+            child_process.exec('git add . && git commit -m \'Updated log file\' && git push origin master', function(err, stdout, stderr)
+            {
+                if(err)
+                {
+                    console.log(err);
+                }
+
+                else
+                {
+                    console.log(stdout);
+                }
+            });
         }
     });
 }
