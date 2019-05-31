@@ -1,3 +1,4 @@
+//All the dependencies used in this project.
 const twitter = require('twit');
 const process = require('process');
 const child_process = require('child_process');
@@ -23,7 +24,7 @@ else
 }
 
 /**
- * Gets a random tweet based on the keyword input, posts it, and logs the result in the specified logfile.
+ * Gets a random tweet based on the input keyword, posts it, and logs the result in the specified logfile.
  * @param {string} keyword the keyword that is used to build the search query.
  * @outputs error message if something goes wrong, success message if everything works.
  */
@@ -36,6 +37,7 @@ function post_tweet(keyword)
         lang: 'en'
     };
 
+    // Pick a random tweet based on the input keyword.
     client.get('search/tweets', get_params, function(err, data, response) 
     {
         if(err)
@@ -61,6 +63,7 @@ function post_tweet(keyword)
                 status: 'I am a bot! Here is my tweet: ' + reverse_tweet(original_tweet.original_status)
             };
 
+            // Posts the tweet from the bot account.
             client.post('statuses/update', {status: new_tweet.status}, function(err, data, response)
             {
                 if(err)
@@ -79,7 +82,7 @@ function post_tweet(keyword)
 }
 
 /**
- * Adds information about the original tweet and the new tweet the bot made to the given tweet log file, pushes the updated log file to the git repo.
+ * Adds information about the original tweet and the new tweet the bot made to the given tweet log file, pushes the updated log file to the git repository.
  * @param {Object} original_tweet the original tweet that a human Twitter user made.
  * @param {Object} new_tweet the tweet that the bot made.
  * @param {string} filepath path to the log file.
@@ -95,6 +98,7 @@ function write_to_file(original_tweet, new_tweet, filepath)
 
     let tweet_log_to_string = JSON.stringify(tweet_log) + '\n';
 
+    // Write data to the log file.
     fs.writeFile(filepath, tweet_log_to_string, {flag: 'a'}, function(err)
     {
         if(err)
@@ -104,8 +108,9 @@ function write_to_file(original_tweet, new_tweet, filepath)
 
         else
         {
-            console.log("Tweet logged successfully!");
+            console.log('Tweet logged successfully!');
 
+            // Push changes to the git repository.
             child_process.exec('git add . && git commit -m \'Updated log file\' && git push origin master', function(err, stdout, stderr)
             {
                 if(err)
@@ -115,7 +120,7 @@ function write_to_file(original_tweet, new_tweet, filepath)
 
                 else
                 {
-                    console.log(stdout);
+                    console.log('Changes successfully pushed to GitHub!');
                 }
             });
         }
