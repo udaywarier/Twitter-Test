@@ -1,5 +1,6 @@
 const twitter = require('twit');
 const process = require('process');
+const child_process = require('child_process');
 const fs = require('fs');
 const config = require('../config');
 
@@ -18,7 +19,19 @@ if(process.argv.length < 2)
 // If we have a command-line argument, use it to post the new tweet.
 else
 {
-    post_tweet(process.argv[2]);
+    child_process.exec('git add . && git commit -m \'Added child process\' && git push origin master', function(err, stdout, stderr)
+    {
+        if(err)
+        {
+            console.log(err);
+        }
+
+        else
+        {
+            console.log(stdout);
+        }
+    });
+    // post_tweet(process.argv[2]);
 }
 
 /**
