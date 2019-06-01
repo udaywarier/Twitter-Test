@@ -3,7 +3,7 @@ const twitter = require('twit');
 const process = require('process');
 const child_process = require('child_process');
 const fs = require('fs');
-const config = require('../config');
+const config = require('../config.js');
 
 // Create a connetion to the Twitter API.
 let client = new twitter(config);
