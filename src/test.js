@@ -11,13 +11,13 @@ let client = new twitter(config);
 // Logfile which will contain information on every tweet the bot has ever posted. This can be changed by different users to suit their own machine.
 let filepath = './tweet_logs.txt';
 
-// If there's no command-line argument, use the default keyword 'dog'.
+// If there is no command-line argument, use the default keyword 'dog'.
 if(process.argv.length < 2)
 {
     post_tweet('dog');
 }
 
-// If we have a command-line argument, use it as a keyword to post the new tweet.
+// If there is a command-line argument, use it as a keyword to post the new tweet.
 else
 {
     post_tweet(process.argv[2]);
