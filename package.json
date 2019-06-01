@@ -5,11 +5,11 @@
   "main": "config.js",
   "scripts": 
   {
-    "start": "cd ./src && node test.js dog && cd ../"
+    "start": "cd src/ && node test.js dog"
   },
   "keywords": [],
   "author": "Uday Warier",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": 
   {
     "cors": "^2.8.5",
