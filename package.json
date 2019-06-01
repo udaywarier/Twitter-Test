@@ -2,10 +2,10 @@
   "name": "twitter_test",
   "version": "1.0.0",
   "description": "Testing the Twitter API to familiarize myself with how it works",
-  "main": "config.js",
+  "main": "src/test.js",
   "scripts": 
   {
-    "start": "cd src/ && node test.js dog"
+    "start": "cd src/ && node test.js dog && cd ../"
   },
   "keywords": [],
   "author": "Uday Warier",
