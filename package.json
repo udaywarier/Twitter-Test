@@ -1,7 +1,7 @@
 {
   "name": "twitter_test",
   "version": "1.0.0",
-  "description": "Testing the Twitter API to familiarize myself with how it works",
+  "description": "Becoming familiar with the Twitter API by creating a simple Twitter bot.",
   "main": "src/test.js",
   "scripts": 
   {
